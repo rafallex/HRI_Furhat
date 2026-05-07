@@ -7,8 +7,8 @@ from openai_helper import OpenAIHelper
 
 ai = OpenAIHelper()
 
-ROBOT_IP = "127.0.0.1"       # change to Furhat IP if not using virtual Furhat
-AUTH_KEY = None              # put your key here if authentication is enabled
+ROBOT_IP = "127.0.0.1"
+AUTH_KEY = None
 
 CONDITION = "empathetic"     # change to "neutral" for condition 2
 
