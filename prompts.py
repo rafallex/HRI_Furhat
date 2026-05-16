@@ -7,7 +7,9 @@ Keep the greeting short and quick'''
 
 
 response_prompt='''Based on the response received by the student, acknowledge that response with a short reply accordingly.
-Keep your response between 20-25 words and be empathetic.
+Keep your response between 20-25 words and be empathetic. DO NOT ASKS QUESTIONS OR
+ASK THE USER TO ELABORATE, just acknowledge and move by informing the user that
+you are moving to next question.
 '''
 
 questions=["How would you describe your overall mood this week",
@@ -20,4 +22,3 @@ questions=["How would you describe your overall mood this week",
 
 
 
-map_sentiments=None
