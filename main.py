@@ -1,7 +1,7 @@
 from LLMmodule import GroqLLM
 from furhat_client import FurhatRobot
 from prompts import questions
-from SentimentEmoModule import SentimentDetection
+from SentimentEmoModule import SentimentDetection,EmotionDectection
 import os
 from dotenv import load_dotenv
 from prompts import questions,greeting_prompt
@@ -11,6 +11,10 @@ load_dotenv()
 def main():
     #llm object
     llm=GroqLLM()
+    
+    #create sentiment class and emotion class
+    setiment=SentimentDetection()
+    emotion=EmotionDectection()  #might use later
     
     #create furhat object and connect to it
     furhat_host='localhost'
@@ -41,8 +45,11 @@ def main():
             #listen to user response
             furhat.listen_led()
             user_response=furhat.listen()
-    
             
+            #detect the sentiment of user
+            user_sentiment=setiment.detect_sentiment(user_response)
+            furhat.gesture(user_sentiment)
+            furhat.sentiment_led(user_sentiment)
             #acknowledge the user response
             robot_utt=llm.generate_response(user_response)
             #speak the acknowledgement
