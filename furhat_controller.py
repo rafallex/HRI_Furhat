@@ -24,6 +24,11 @@ def connect_furhat():
     furhat.request_voice_config(name="Emma", language="en-GB", input_language=True)
     return furhat
 
+def set_led(furhat, red, green, blue):
+    try:
+        furhat.request_led(red=red, green=green, blue=blue)
+    except Exception as e:
+        print(f"[LED ERROR] {e}")
 
 def speak(furhat, text):
     print(f"\n[FURHAT]: {text}")
@@ -81,7 +86,7 @@ def play_expression(furhat, expression):
 
 def listen(furhat):
     print("\n[LISTENING...]")
-
+    furhat.request_led_set("#4A0AF2")
     response = furhat.request_listen_start()
 
     if response is None:
@@ -135,16 +140,21 @@ def ask_question(furhat, question, condition):
     if condition == "empathetic":
         #furhat.request_gesture_start("ExpressSad", wait=False)
         if expression == "supportive_sad":
+            furhat.request_led_set("#0E5273")
             furhat.request_gesture_start("ExpressSad", wait=False)
         elif expression == "concerned":
+            furhat.request_led_set("#0E5273")
             furhat.request_gesture_start("ExpressSad", wait=False)
         elif expression == "gentle_smile":
+            furhat.request_led_set("#1FC35D")
             furhat.request_gesture_start("Smile", wait=False)
         elif expression == "encouraging":
+            furhat.request_led_set("#1FC35D")
             furhat.request_gesture_start("Smile", wait=False)
             time.sleep(0.8)
             furhat.request_gesture_start("Nod", wait=False)
         elif expression == "reflective":
+            furhat.request_led_set("#1FC35D")
             furhat.request_gesture_start("Surprise", wait=False)
             time.sleep(0.8)
             furhat.request_gesture_start("Smile", wait=False)
@@ -188,7 +198,7 @@ def run_checkin():
 
     try:
         #furhat.request_gesture_start("Smile", wait=False)
-
+        furhat.request_led_set("#44FB03")
         speak(furhat, "Hello. I am Furhat. This is a short wellbeing check-in.")
         speak(furhat, "You can answer briefly, and you can stop at any time.")
 
