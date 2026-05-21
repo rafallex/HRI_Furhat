@@ -4,6 +4,7 @@ import csv
 import re
 import time
 from openai_helper import OpenAIHelper
+#from facial_gestures import play_expression
 
 ai = OpenAIHelper()
 
@@ -28,7 +29,55 @@ def speak(furhat, text):
     print(f"\n[FURHAT]: {text}")
     furhat.request_speak_text(text, wait=True)
 
+def normalize_expression(expression):
+    expression = str(expression).lower().strip()
+    expression = expression.replace("-", "_").replace(" ", "_").replace(".", "")
 
+    aliases = {
+        "sad": "supportive_sad",
+        "supportive": "supportive_sad",
+        "supportive_sad": "supportive_sad",
+        "concern": "concerned",
+        "concerned": "concerned",
+        "smile": "gentle_smile",
+        "gentle_smile": "gentle_smile",
+        "happy": "encouraging",
+        "encouraging": "encouraging",
+        "reflective": "reflective",
+        "neutral": "neutral",
+    }
+
+    return aliases.get(expression, "reflective")
+
+def safe_gesture(furhat, name):
+    try:
+        print(f"[GESTURE] Trying: {name}")
+        furhat.request_gesture_start(name=name)
+        time.sleep(1)
+    except Exception as e:
+        print(f"[GESTURE ERROR] {name}: {e}")
+
+def play_expression(furhat, expression):
+
+    print(f"[PLAY EXPRESSION] {expression}")
+
+    if expression == "supportive_sad":
+        furhat.request_gesture_start("ExpressSad", wait=False)
+
+    elif expression == "concerned":
+        furhat.request_gesture_start("ExpressSad", wait=False)
+
+    elif expression == "gentle_smile":
+        furhat.request_gesture_start("Smile", wait=False)
+
+    elif expression == "encouraging":
+        furhat.request_gesture_start("Smile", wait=False)
+
+    elif expression == "reflective":
+        furhat.request_gesture_start("Smile", wait=False)
+
+    else:
+        print("[NO GESTURE]")
 
 def listen(furhat):
     print("\n[LISTENING...]")
@@ -50,13 +99,13 @@ def empathetic_reaction(furhat, user_text):
     text = user_text.lower()
 
     if any(word in text for word in ["bad", "sad", "stressed", "tired", "anxious", "lonely"]):
-        furhat.request_gesture_start("ExpressSad", wait=False)
+        furhat.request_gesture_start(name="ExpressSad")
         speak(furhat, "I'm sorry to hear that. That sounds difficult. Thank you for sharing it with me.")
     elif any(word in text for word in ["good", "happy", "great", "fine", "okay", "better"]):
-        furhat.request_gesture_start("Smile", wait=False)
+        furhat.request_gesture_start(name="Smile")
         speak(furhat, "I'm glad to hear that. It is nice that you are noticing positive moments.")
     else:
-        furhat.request_gesture_start("Nod", wait=False)
+        furhat.request_gesture_start(name="Nod")
         speak(furhat, "Thank you for telling me. It is helpful to take a moment to reflect on that.")
 
 
@@ -75,13 +124,37 @@ def ask_question(furhat, question, condition):
 
     print("\n[OPENAI] Generating response...")
 
-    robot_reply = ai.generate_robot_response(answer, condition)
+    robot_response = ai.generate_robot_response(answer, condition)
+
+    robot_reply = robot_response["reply"]
+    expression = robot_response["expression"]
 
     print(f"[OPENAI RESPONSE]: {robot_reply}")
+    print(f"[OPENAI EXPRESSION]: {expression}")
 
     if condition == "empathetic":
-        furhat.request_gesture_start("Nod", wait=False)
-
+        #furhat.request_gesture_start("ExpressSad", wait=False)
+        if expression == "supportive_sad":
+            furhat.request_gesture_start("ExpressSad", wait=False)
+        elif expression == "concerned":
+            furhat.request_gesture_start("ExpressSad", wait=False)
+        elif expression == "gentle_smile":
+            furhat.request_gesture_start("Smile", wait=False)
+        elif expression == "encouraging":
+            furhat.request_gesture_start("Smile", wait=False)
+            time.sleep(0.8)
+            furhat.request_gesture_start("Nod", wait=False)
+        elif expression == "reflective":
+            furhat.request_gesture_start("Surprise", wait=False)
+            time.sleep(0.8)
+            furhat.request_gesture_start("Smile", wait=False)
+        else:
+            print("[NO GESTURE]")
+        #play_expression(furhat, expression)
+    else:
+        furhat.request_gesture_start("Smile", wait=False)
+        #play_expression(furhat, "neutral")
+    time.sleep(0.3)
     speak(furhat, robot_reply)
 
     return answer
@@ -114,7 +187,7 @@ def run_checkin():
     answers = []
 
     try:
-        furhat.request_gesture_start("Smile", wait=False)
+        #furhat.request_gesture_start("Smile", wait=False)
 
         speak(furhat, "Hello. I am Furhat. This is a short wellbeing check-in.")
         speak(furhat, "You can answer briefly, and you can stop at any time.")
@@ -143,4 +216,5 @@ def run_checkin():
 
 
 if __name__ == "__main__":
+    time.sleep(2)
     run_checkin()
