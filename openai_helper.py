@@ -9,9 +9,6 @@ class OpenAIHelper:
         load_dotenv(override=True)
 
         api_key = os.getenv("OPENAI_API_KEY")
-
-        print("Loaded key ending with:", api_key[-4:])
-
         self.client = OpenAI(api_key=api_key)
         self.model = model
 
