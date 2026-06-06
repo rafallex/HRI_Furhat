@@ -24,11 +24,17 @@ Built for a **Human-Robot Interaction** course project at Uppsala University.
 | `facial_gestures.py` | Furhat facial-gesture triggers |
 | `prompts.py` | System and turn-level prompts for the check-in |
 
+## The study it was built for
+
+The system was the apparatus for a between-subjects HRI study: **does empathetic robot behaviour change how a social robot is perceived during a wellbeing check-in?** Two versions of the check-in were produced from identical scripts — an **empathetic** one (supportive language, smiles, eyebrow movement, reflective nods, attentive gaze, slowed prosody) and a **neutral** one (task-focused acknowledgements, steady gaze, no emotional expression).
+
+Twenty-three Uppsala students were randomly assigned to one condition (empathetic *n* = 12, neutral *n* = 11) and rated the robot on the **Robotic Perceived Empathy (RoPE)** scale and the **Godspeed** likability/intelligence subscales. Mann–Whitney U tests found **no significant scale-level difference** between the conditions (RoPE *U* = 70.0, *p* = .49; likability *U* = 69.5, *p* = .34) — a useful reminder that for a short, clearly-structured check-in, a simpler neutral style can be about as acceptable as an expressive one.
+
 ## Team and my contribution
 
-Group project by **Sami Mnif**, **Venkatesh Akhouri**, and **Rafael Proença**.
+Group project for **1MD043 Human–Robot Interaction** (Uppsala) by **Dan Zhang**, **Venkatesh Akhouri**, **Rafael Proença**, and **Sami Mnif**.
 
-My part: I added the **Google Gemini backend** as an alternative to the OpenAI/Groq path — so the robot can run on a free Google AI Studio key — and simplified the environment setup.
+My part: I assisted with the experimental design and the report, helped structure the interaction flow and the analysis, and added a **Google Gemini backend** to the system as an alternative to the OpenAI/Groq path.
 
 ## Running it
 
