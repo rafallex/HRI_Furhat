@@ -8,7 +8,7 @@ Built for a **Human-Robot Interaction** course project at Uppsala University.
 
 - **Spoken dialogue on a Furhat robot** — connects to the Furhat real-time API, configures the voice, and drives a greet → ask → listen → respond loop with LED state cues (`main.py`, `furhat_client.py`, `furhat_controller.py`).
 - **LLM-driven empathetic responses** — a system prompt frames the robot as a social agent conducting a 3-minute student check-in, and each answer gets a short, empathetic acknowledgement (`LLMmodule.py`, `prompts.py`).
-- **Pluggable LLM backends** — Groq, OpenAI, or Google **Gemini** can drive the conversation, selected via environment variables.
+- **Swappable LLM backends** — the dialogue layer wraps Groq, OpenAI, and Google **Gemini** behind a common interface (`main.py` runs the Groq backend by default).
 - **Sentiment sensing** — each student response is scored with a RoBERTa sentiment model (`cardiffnlp/twitter-roberta-base-sentiment-latest`) so the interaction can respond to how the student is feeling (`SentimentEmoModule.py`).
 - **Facial gestures** — expressive gestures are triggered during the interaction (`facial_gestures.py`).
 
