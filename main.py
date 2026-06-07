@@ -1,4 +1,4 @@
-from LLMmodule import GroqLLM
+from LLMmodule import GroqLLM, GeminiLLM
 from furhat_client import FurhatRobot
 from prompts import questions
 from SentimentEmoModule import SentimentDetection
@@ -9,8 +9,9 @@ from prompts import questions,greeting_prompt
 load_dotenv()
 
 def main():
-    #llm object
-    llm=GroqLLM()
+    # LLM backend: Groq (default) or Gemini, chosen via the LLM_BACKEND env var
+    backend = os.getenv("LLM_BACKEND", "groq").strip().lower()
+    llm = GeminiLLM() if backend == "gemini" else GroqLLM()
     
     #create furhat object and connect to it
     furhat_host='localhost'

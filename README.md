@@ -8,7 +8,7 @@ Built for a **Human-Robot Interaction** course project at Uppsala University.
 
 - **Spoken dialogue on a Furhat robot** — connects to the Furhat real-time API, configures the voice, and drives a greet → ask → listen → respond loop with LED state cues (`main.py`, `furhat_client.py`, `furhat_controller.py`).
 - **LLM-driven empathetic responses** — a system prompt frames the robot as a social agent conducting a 3-minute student check-in, and each answer gets a short, empathetic acknowledgement (`LLMmodule.py`, `prompts.py`).
-- **Swappable LLM backends** — the dialogue layer wraps Groq, OpenAI, and Google **Gemini** behind a common interface (`main.py` runs the Groq backend by default).
+- **Swappable LLM backends** — Groq and Google **Gemini** sit behind a common interface in `LLMmodule.py`, and `main.py` picks one via the `LLM_BACKEND` env var (default `groq`). A separate OpenAI path generates the empathetic/neutral replies in `furhat_controller.py`.
 - **Sentiment sensing** — each student response is scored with a RoBERTa sentiment model (`cardiffnlp/twitter-roberta-base-sentiment-latest`) so the interaction can respond to how the student is feeling (`SentimentEmoModule.py`).
 - **Facial gestures** — expressive gestures are triggered during the interaction (`facial_gestures.py`).
 
@@ -45,11 +45,12 @@ FURHAT_AUTH_KEY=<your-furhat-key>
 GROQ_API_KEY=<your-groq-key>        # for the Groq backend
 OPENAI_API_KEY=<your-openai-key>    # for the OpenAI backend
 GEMINI_API_KEY=<your-google-ai-key> # for the Gemini backend
+LLM_BACKEND=groq                    # main.py dialogue backend: groq (default) or gemini
 ```
 
 ```bash
 pip install -r requirements.txt
-python main.py
+python main.py            # set LLM_BACKEND=gemini to run the Gemini backend instead
 ```
 
 Keys are read from the environment — nothing is hard-coded. This repo is a fork of the group's shared project.
